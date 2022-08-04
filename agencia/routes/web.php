@@ -2,17 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
+//Route::metodo( '/peticion', acción )
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,3 +12,35 @@ Route::get('/rojo', function ()
 {
     return view('welcome');
 });
+
+Route::get('/form', function ()
+{
+    return view('form');
+});
+Route::post('/procesa', function ()
+{
+    //capturamos dato enviado por el form
+    //$nombre = $_POST['nombre'];
+    //$nombre = request()->input('nombre');
+    $nombre = request('nombre');
+    //creamos un array de marcas
+    $marcas = [ 'samsung', 'audiotecnica', 'boss', 'senheisser', 'apple', 'asus' ];
+
+    //pasamos variable/s a la ruta
+    return view('procesa',
+                [
+                    'nombre'=>$nombre,
+                    'marcas'=>$marcas
+                ]
+            );
+});
+
+/* Traemos datos desde MySQL */
+Route::get('/listaRegiones', function ()
+{
+    $regiones = DB::select('SELECT idRegion, regNombre
+                            FROM regiones');
+    return view('listaRegiones', [ 'regiones'=>$regiones ]);
+});
+
+
