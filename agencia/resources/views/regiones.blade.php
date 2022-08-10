@@ -3,7 +3,11 @@
 
     <h1>Panel de administración de regiones</h1>
 
-
+    @if( session('mensaje') )
+        <div class="alert alert-{{ session('css') }}">
+            {{ session('mensaje') }}
+        </div>
+    @endif
 
     <div class="row my-3 d-flex justify-content-between">
         <div class="col">
