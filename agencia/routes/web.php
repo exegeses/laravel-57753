@@ -134,3 +134,9 @@ Route::post('/region/update', function ()
             ]);
     }
 });
+Route::get('/region/delete/{id}', function ($id)
+{
+    $cantidad = DB::table('destinos')
+                    ->where('idRegion', $id)->count();
+    return view('regionDelete', [ 'cantidad'=>$cantidad ]);
+});

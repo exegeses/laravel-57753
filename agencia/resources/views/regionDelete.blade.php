@@ -3,7 +3,7 @@
 
     <h1>Baja de una región</h1>
 
-
+@if( $cantidad > 0 )
     <div class="alert text-danger bg-light p-4 col-8 mx-auto shadow">
         No se puede eliminar la región
         <span class="fs-4">{{ 'regNombre' }}</span>.
@@ -11,7 +11,7 @@
             Volver a panel de regiones
         </a>
     </div>
-
+@else
 
     <div class="alert text-danger bg-light p-4 col-8 mx-auto shadow">
         Se eliminará la región
@@ -27,8 +27,7 @@
                 volver a panel
             </a>
         </form>
-
     </div>
-
+@endif
 
 @endsection
