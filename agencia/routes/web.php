@@ -89,3 +89,48 @@ Route::post('/region/store', function ()
     }
 
 });
+Route::get('/region/edit/{id}', function ($id)
+{
+    //obtener datos de la región
+    /* raw SQL
+    $region = DB::select('SELECT idRegion, regNombre
+                            FROM regiones
+                            WHERE idRegion = :id',
+                                    [ $id ]
+                        );
+    */
+    $region = DB::table('regiones')
+                    ->where('idRegion', $id)->first();
+    //retornar vista del form para editar
+    return view('regionEdit', [ 'region'=>$region ]);
+
+});
+Route::post('/region/update', function ()
+{
+    //capturamos datos enviados por el form
+    $regNombre = request('regNombre');
+    $idRegion = request('idRegion');
+    /*
+    DB::update('UPDATE regiones
+                   SET  regNombre = :regNombre
+                   WHERE idRegion = :idRegion',
+                        [ $regNombre, $idRegion ]
+               );*/
+    try{
+        DB::table('regiones')
+                ->where('idRegion', $idRegion)
+                ->update( [ 'regNombre'=>$regNombre ] );
+        return redirect('/regiones')
+            ->with([
+                'mensaje'=>'Región: '.$regNombre.' modificada correctamente.',
+                'css' => 'success'
+            ]);
+    }
+    catch ( \Throwable  $th ){
+        return redirect('/regiones')
+            ->with([
+                'mensaje'=>'No se pudo modificar la región: '.$regNombre,
+                'css'=>'danger'
+            ]);
+    }
+});
