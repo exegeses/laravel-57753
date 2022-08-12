@@ -138,5 +138,35 @@ Route::get('/region/delete/{id}', function ($id)
 {
     $cantidad = DB::table('destinos')
                     ->where('idRegion', $id)->count();
-    return view('regionDelete', [ 'cantidad'=>$cantidad ]);
+    $region = DB::table('regiones')
+                    ->where('idRegion',$id)->first();
+    return view('regionDelete',
+                        [
+                            'cantidad'=>$cantidad,
+                            'region'=>$region
+                        ]);
+});
+Route::post('/region/destroy', function ()
+{
+    $idRegion = request('idRegion');
+    $regNombre = request('regNombre');
+    try {
+        DB::table('regiones')
+            ->where('idRegion', $idRegion)
+            ->delete();
+        return redirect('/regiones')
+            ->with([
+                'mensaje'=>'Región: '.$regNombre.' eliminada correctamente.',
+                'css' => 'success'
+            ]);
+    }
+    catch ( \Throwable  $th ){
+            //throw $th;
+            return redirect('/regiones')
+                ->with([
+                    'mensaje'=>'No se pudo eliminar la región: '.$regNombre,
+                    'css'=>'danger'
+                ]);
+    }
+
 });
