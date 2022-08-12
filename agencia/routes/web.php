@@ -170,3 +170,6 @@ Route::post('/region/destroy', function ()
     }
 
 });
+
+########################
+## CRUD de destinos
