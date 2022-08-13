@@ -190,3 +190,50 @@ Route::get('/destinos', function ()
     //retornamos vista
     return view('destinos', [ 'destinos'=>$destinos ]);
 });
+Route::get('/destino/create', function ()
+{
+    //obtenemos listado de regiones
+    $regiones = DB::table('regiones')->get();
+    return view('destinoCreate', [ 'regiones'=>$regiones ]);
+});
+Route::post('/destino/store', function ()
+{
+    $destNombre = request()->destNombre;
+    $idRegion = request()->idRegion;
+    $destPrecio = request()->destPrecio;
+    $destAsientos = request()->destAsientos;
+    $destDisponibles = request()->destDisponibles;
+    /* Raw SQL
+    DB::insert('
+            INSERT INTO destinos
+                ( destNombre, idRegion, destPrecio, destAsientos, destDisponibles )
+              VALUES
+                ( :destNombre, :idRegion, :destPrecio, :destAsientos, :destDisponibles )',
+                [ $destNombre, $idRegion, $destPrecio, $destAsientos, $destDisponibles ]);
+    */
+    try {
+        DB::table('destinos')
+                ->insert(
+                    [
+                        'destNombre'=>$destNombre,
+                        'idRegion'=>$idRegion,
+                        'destPrecio'=>$destPrecio,
+                        'destAsientos'=>$destAsientos,
+                        'destDisponibles'=>$destDisponibles
+                    ]
+                );
+        return redirect('/destinos')
+            ->with([
+                'mensaje'=>'Destino: '.$destNombre.' agregado correctamente',
+                'css'=>'success'
+            ]);
+    }
+    catch ( \Throwable  $th ){
+            //throw $th;
+            return redirect('/destinos')
+                ->with([
+                    'mensaje'=>'No se pudo agregar el destino: '.$destNombre,
+                    'css'=>'danger'
+                ]);
+        }
+});
