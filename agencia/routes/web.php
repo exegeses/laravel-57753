@@ -173,3 +173,20 @@ Route::post('/region/destroy', function ()
 
 ########################
 ## CRUD de destinos
+Route::get('/destinos', function ()
+{
+    //obtenemos listado de destinos
+    /*
+     * $destinos = DB::select("SELECT idDestino, destNombre,
+                                   regNombre, destPrecio,
+                                   destAsientos, destDisponibles
+                                FROM destinos as d
+                                    JOIN regiones as r on r.idRegion = d.idRegion")
+     * */
+    $destinos = DB::table('destinos as d')
+                    ->join('regiones as r',
+                            'r.idRegion', '=', 'd.idRegion')
+                        ->get();
+    //retornamos vista
+    return view('destinos', [ 'destinos'=>$destinos ]);
+});
