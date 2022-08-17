@@ -284,3 +284,10 @@ Route::post('/destino/update', function ()
                 ]);
         }
 });
+Route::get('/destino/delete/{id}', function ($id)
+{
+    $destino = DB::table('destinos as d')
+        ->join('regiones as r', 'r.idRegion', '=', 'd.idRegion')
+        ->where('idDestino', $id)->first();
+    return view('destinoDelet', [ 'destino'=>$destino ]);
+});
