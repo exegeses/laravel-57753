@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `catalogo2020`
 --
-CREATE DATABASE IF NOT EXISTS `catalogo2020` DEFAULT CHARACTER SET utf8mb4;
-USE `catalogo2020`;
+CREATE DATABASE IF NOT EXISTS `catalogo2022` DEFAULT CHARACTER SET utf8mb4;
+USE `catalogo2022`;
 
 -- --------------------------------------------------------
 
