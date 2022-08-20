@@ -9,6 +9,7 @@
             <div class="form-group">
                 <label for="mkNombre">Nombre de la marca</label>
                 <input type="text" name="mkNombre"
+                       value="{{ old( 'mkNombre' ) }}"
                        class="form-control" id="mkNombre">
             </div>
 
@@ -22,8 +23,11 @@
     @if( $errors->any() )
         <div class="alert alert-danger p-4 col-8 mx-auto">
             <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                @foreach( $errors->all() as $error )
+                    <li>
+                        <i class="bi bi-exclamation-triangle"></i>
+                        {{ $error }}
+                    </li>
                 @endforeach
             </ul>
         </div>

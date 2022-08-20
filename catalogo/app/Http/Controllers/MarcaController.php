@@ -34,8 +34,14 @@ class MarcaController extends Controller
     private function validarForm( Request $request )
     {
         $request->validate(
-            //[ 'campo'=>'reglas ]
-            [ 'mkNombre'=>'required|unique:marcas|min:2|max:30' ]
+            //[ 'campo'=>'reglas ], [ 'campo.regla'=>'mensaje' ]
+            [ 'mkNombre'=>'required|unique:marcas|min:2|max:30' ],
+            [
+              'mkNombre.required'=>'El campo "Nombre de la marca" es obligatorio.',
+              'mkNombre.unique'=>'No puede haber dos marcas con el mismo nombre.',
+              'mkNombre.min'=>'El campo "Nombre de la marca" debe tener al menos 2 caractéres.',
+              'mkNombre.max'=>'El campo "Nombre de la marca" debe tener 30 caractéres como máximo.'
+            ]
         );
     }
 
@@ -49,8 +55,29 @@ class MarcaController extends Controller
     {
         //validación
         $this->validarForm($request);
-        //si llega hasta acá, significa que está todo ok
-        return 'pasó la validación';
+        //si pasó la validación:
+        try {
+            // instanciamos
+            $Marca = new Marca;
+            //asignamos atributos
+            $Marca->mkNombre = $request->mkNombre;
+            //guardamos en tabla marcas
+            $Marca->save();
+            return redirect('/marcas')
+                    ->with([
+                            'mensaje'=>'Marca: '.$request->mkNombre.' agregada correctamente',
+                            'css'=>'success'
+                            ]);
+        }
+        catch ( \Throwable $th ){
+            //throw $th
+            return redirect('/marcas')
+                ->with([
+                    'mensaje'=>'No se pudo agregar la marca: '.$request->mkNombre,
+                    'css'=>'danger'
+                ]);
+        }
+
     }
 
     /**
