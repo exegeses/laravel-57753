@@ -100,6 +100,7 @@ class MarcaController extends Controller
     public function edit($id)
     {
         //obtenemos datos de marca por su id
+        //DB::select('SELECT idMarca, mkNombre FROM marcas WHERE idMarca = :idMarca');
         //DB::table('marcas')->where('idMarca', $id)->first();
         $Marca = Marca::find($id);
         return view('marcaEdit', [ 'Marca'=>$Marca ]);
@@ -138,6 +139,21 @@ class MarcaController extends Controller
                     'css'=>'danger'
                 ]);
         }
+
+    }
+
+    public function confirm( $id )
+    {
+        //obtenemos datos de una marca por su id
+        $Marca = Marca::find( $id );
+
+        //si NO hay productos relacionados a esa marca
+            //podemos borrar
+        return view('marcaDelete', [ 'Marca'=>$Marca ]);
+
+
+        //si HAY hay productos relacionados a esa marca
+            // no podemos borrar
 
     }
 
