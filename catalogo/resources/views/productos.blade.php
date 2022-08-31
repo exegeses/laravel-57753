@@ -32,8 +32,8 @@
             <h2>{{ $producto->prdNombre }}</h2>
             <span class="precio3">${{ $producto->prdPrecio }}</span>
             <p>
-                Marca: marca <br>
-                Categoría: categoría <br>
+                Marca: {{ $producto->getMarca->mkNombre }} <br>
+                Categoría: {{ $producto->getCategoria->catNombre }} <br>
                 {{ $producto->prdDescripcion }}
             </p>
         </div>
