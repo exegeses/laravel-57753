@@ -5,10 +5,11 @@
 
     <div class="alert p-4 col-8 mx-auto shadow">
         <form action="/producto/store" method="post" enctype="multipart/form-data">
-
+        @csrf
             <div class="form-group mb-4">
                 <label for="prdNombre">Nombre del Producto</label>
                 <input type="text" name="prdNombre"
+                       value="{{ old('prdNombre') }}"
                        class="form-control" id="prdNombre">
             </div>
 
@@ -18,6 +19,7 @@
                     <div class="input-group-text">$</div>
                 </div>
                 <input type="number" name="prdPrecio"
+                       value="{{ old('prdPrecio') }}"
                        class="form-control" id="prdPrecio" min="0" step="0.01">
             </div>
 
@@ -25,6 +27,9 @@
                 <label for="idMarca">Marca</label>
                 <select class="form-select" name="idMarca" id="idMarca">
                     <option value="">Seleccione una marca</option>
+                @foreach( $marcas as $marca )
+                    <option @selected( old('idMarca')==$marca->idMarca ) value="{{ $marca->idMarca }}">{{ $marca->mkNombre }}</option>
+                @endforeach
                 </select>
             </div>
 
@@ -32,12 +37,15 @@
                 <label for="idCategoria">Categoría</label>
                 <select class="form-select" name="idCategoria" id="idCategoria">
                     <option value="">Seleccione una categoría</option>
+                @foreach( $categorias as $categoria )
+                    <option @selected( old('idCategoria')==$categoria->idCategoria ) value="{{ $categoria->idCategoria }}">{{ $categoria->catNombre }}</option>
+                @endforeach
                 </select>
             </div>
 
             <div class="form-group mb-4">
                 <label for="prdDescripcion">Descripción del Producto</label>
-                <textarea name="prdDescripcion" class="form-control" id="prdDescripcion"></textarea>
+                <textarea name="prdDescripcion" class="form-control" id="prdDescripcion">{{ old('prdDescripcion') }}</textarea>
             </div>
 
             <div class="custom-file mt-1 mb-4">
@@ -52,5 +60,18 @@
 
         </form>
     </div>
+
+    @if( $errors->any() )
+        <div class="alert alert-danger p-4 col-8 mx-auto">
+            <ul>
+                @foreach( $errors->all() as $error )
+                    <li>
+                        <i class="bi bi-exclamation-triangle"></i>
+                        {{ $error }}
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
 @endsection

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Marca;
+use App\Models\Categoria;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
@@ -25,8 +27,47 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
-        return view('productoCreate');
+        //obtenemos listados de marcas y categorías
+        $marcas = Marca::all();
+        $categorias = Categoria::all();
+        return view('productoCreate',
+                    [
+                        'marcas'=>$marcas,
+                        'categorias'=>$categorias
+                    ]
+                    );
+    }
+
+    private function validarForm( Request $request )
+    {
+        $request->validate(
+            [
+                'prdNombre'=>'required|min:2|max:30',
+                'prdPrecio'=>'required|numeric|min:0',
+                'idMarca'=>'required',
+                'idCategoria'=>'required',
+                'prdDescripcion'=>'required|min:3|max:150',
+                'prdImagen'=>'mimes:png,jpg,jpeg,webp,svg,gif|max:2048'
+            ],
+            [
+                'prdNombre.required' => 'El campo "Nombre del producto" es obligatorio.',
+                'prdNombre.min'=>'El campo "Nombre del producto" debe tener como mínimo 2 caractéres.',
+                'prdNombre.max'=>'El campo "Nombre" debe tener 30 caractéres como máximo.',
+                'prdNombre.required' => 'El campo "Nombre del producto" es obligatorio.',
+                'prdNombre.min'=>'El campo "Nombre del producto" debe tener como mínimo 2 caractéres.',
+                'prdNombre.max'=>'El campo "Nombre" debe tener 30 caractéres como máximo.',
+                'prdPrecio.required'=>'Complete el campo Precio.',
+                'prdPrecio.numeric'=>'Complete el campo Precio con un número.',
+                'prdPrecio.min'=>'Complete el campo Precio con un número mayor a 0.',
+                'idMarca.required'=>'Seleccione una marca.',
+                'idCategoria.required'=>'Seleccione una categoría.',
+                'prdDescripcion.required'=>'Complete el campo Descripción.',
+                'prdDescripcion.min'=>'Complete el campo Descripción con al menos 3 caractéres',
+                'prdDescripcion.max'=>'Complete el campo Descripción con 150 caractéres como máxino.',
+                'prdImagen.mimes'=>'Debe ser una imagen.',
+                'prdImagen.max'=>'Debe ser una imagen de 2MB como máximo.'
+            ]
+        );
     }
 
     /**
@@ -37,7 +78,11 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //validación
+
+        //magia para dar de alta
+        //mensaje
+        return 'si llegá hasta aquí, pasó la validación';
     }
 
     /**
