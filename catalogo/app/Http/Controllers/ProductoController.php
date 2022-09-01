@@ -79,7 +79,7 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         //validación
-
+        $this->validarForm( $request );
         //magia para dar de alta
         //mensaje
         return 'si llegá hasta aquí, pasó la validación';
