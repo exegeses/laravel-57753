@@ -99,10 +99,36 @@ class ProductoController extends Controller
     {
         //validación
         $this->validarForm( $request );
-        //magia para dar de alta
+        //subir archivo
         $prdImagen = $this->subirImagen($request);
-        //mensaje
-        return 'Nombre de archivo: '.$prdImagen;
+        try {
+            //magia para dar de alta
+            $Producto = new Producto;
+            $Producto->prdNombre = $request->prdNombre;
+            $Producto->prdPrecio = $request->prdPrecio;
+            $Producto->idMarca = $request->idMarca;
+            $Producto->idCategoria = $request->idCategoria;
+            $Producto->prdDescripcion = $request->prdDescripcion;
+            $Producto->prdImagen = $prdImagen;
+            $Producto->prdActivo = 1;
+            //guardamos
+            $Producto->save();
+            //mensaje
+            //redirecci´ón con mensaje ok
+            return redirect('/productos')
+                ->with([
+                    'mensaje'=>'Producto: '.$request->prdNombre.' agregado correctamente',
+                    'css'=>'success'
+                ]);
+        }
+        catch ( \Throwable $th ){
+            //throw $th
+            return redirect('/productos')
+                ->with([
+                    'mensaje'=>'No se pudo agregar el producto: '.$request->prdNombre,
+                    'css'=>'danger'
+                ]);
+        }
     }
 
     /**

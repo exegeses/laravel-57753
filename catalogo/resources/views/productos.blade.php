@@ -4,7 +4,7 @@
     <h1>Panel de administración de productos</h1>
 
     @if( session('mensaje') )
-        <div class="alert alert-success">
+        <div class="alert alert-{{ session('css') }}">
             {{ session('mensaje') }}
         </div>
     @endif
