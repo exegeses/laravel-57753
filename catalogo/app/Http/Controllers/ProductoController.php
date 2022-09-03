@@ -72,8 +72,13 @@ class ProductoController extends Controller
 
     private function subirImagen( Request $request ) : string
     {
-        //si no enviaron imagen > 'noDisponible.png'
+        //si no enviaron imagen > 'noDisponible.png' en AGREGAR
         $prdImagen = 'noDisponible.png';
+
+        //si no enviaron imagen en MODIFICAR
+        if( $request->has('imgActual') ){
+            $prdImagen = $request->imgActual;
+        }
 
         //si enviaron imagen
         if( $request->file('prdImagen') ){
@@ -148,9 +153,20 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function edit(Producto $producto)
+    public function edit( $id )
     {
-        //
+        //obtenemos datos del producto
+        $Producto = Producto::find($id);
+        //obtenemos listados de marcas y categorias
+        $marcas = Marca::all();
+        $categorias = Categoria::all();
+        return view('productoEdit',
+                [
+                    'Producto' => $Producto,
+                    'marcas' => $marcas,
+                    'categorias' => $categorias
+                ]
+        );
     }
 
     /**
@@ -160,9 +176,42 @@ class ProductoController extends Controller
      * @param  \App\Models\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Producto $producto)
+    public function update( Request $request)
     {
-        //
+        //validación
+        $this->validarForm( $request );
+        //subir imagen
+        $prdImagen = $this->subirImagen( $request );
+
+        try {
+            //magia para modificar
+            $Producto = Producto::find( $request->idProducto );
+            $Producto->prdNombre = $request->prdNombre;
+            $Producto->prdPrecio = $request->prdPrecio;
+            $Producto->idMarca = $request->idMarca;
+            $Producto->idCategoria = $request->idCategoria;
+            $Producto->prdDescripcion = $request->prdDescripcion;
+            $Producto->prdImagen = $prdImagen;
+            $Producto->prdActivo = 1;
+            //guardamos
+            $Producto->save();
+            //mensaje
+            //redirecci´ón con mensaje ok
+            return redirect('/productos')
+                ->with([
+                    'mensaje'=>'Producto: '.$request->prdNombre.' modificado correctamente',
+                    'css'=>'success'
+                ]);
+        }
+        catch ( \Throwable $th ){
+            //throw $th
+            return redirect('/productos')
+                ->with([
+                    'mensaje'=>'No se pudo modificar el producto: '.$request->prdNombre,
+                    'css'=>'danger'
+                ]);
+        }
+
     }
 
     /**
