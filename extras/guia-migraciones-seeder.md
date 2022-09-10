@@ -18,7 +18,9 @@
     php artisan make:seeder NombreSeeder
 
 > correr seeder(s)  
-    php artisan db:seed  *
+    php artisan db:seed  *  
+
+    php artisan db:seed --class=NombreSeed 
 
 > crear Controllers  
     php artisan make:controller NombreController -r
