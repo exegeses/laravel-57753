@@ -14,7 +14,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        //
+        $productos = Producto::with(['getMarca', 'getCategoria'])->get();
+        return view('productos', [ 'productos'=>$productos ]);
     }
 
     /**

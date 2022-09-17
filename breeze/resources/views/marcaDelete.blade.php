@@ -14,14 +14,18 @@
     <!-- formulario -->
                     <div class="flex items-center justify-center shadow-md rounded-md max-w-3xl mb-72">
                         <form action="/marca/delete" method="post">
+                            @method('delete')
                             @csrf
                             <div class="p-6 bg-white">
                                 <div>
                                     Se eliminará la marca:
-                                    <span class="text-2xl text-yellow-600">Nombre</span>
+                                    <span class="text-2xl text-yellow-600">{{ $Marca->mkNombre }}</span>
                                 </div>
                                 <div class="py-6 flex items-center justify-end">
-
+                                    <input type="hidden" name="idMarca"
+                                           value="{{ $Marca->idMarca }}">
+                                    <input type="hidden" name="mkNombre"
+                                           value="{{ $Marca->mkNombre }}">
                                     <button class="text-yellow-900 hover:text-yellow-800
                                         bg-yellow-400 hover:bg-yellow-300 px-5 py-1 mr-6
                                         border border-yellow-500 rounded
@@ -30,7 +34,6 @@
                                         bg-gray-50 hover:bg-white px-5 py-1
                                         border border-gray-300 rounded
                                         ">Volver a panel de marcas</a>
-
                                 </div>
 
                             </div>

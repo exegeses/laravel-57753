@@ -36,13 +36,23 @@ Route::put('/marca/update', [ MarcaController::class, 'update' ])
     ->middleware(['auth']);
 Route::get('/marca/confirm/{id}', [ MarcaController::class, 'confirm' ])
     ->middleware(['auth']);
+Route::delete('/marca/delete', [ MarcaController::class, 'destroy' ])
+    ->middleware(['auth']);
 
-
-
+#################################################################
+######## CRUD de categorías
 Route::get('/categorias', function ()
 {
     return view('categorias');
 })->middleware(['auth'])->name('categorias');
+
+
+#################################################################
+######## CRUD de productos
+use App\Http\Controllers\ProductoController;
+Route::get('/productos', [ ProductoController::class, 'index' ])
+    ->middleware(['auth'])->name('productos');
+
 
 
 /* ruta sin usaar las vistas de breeze */

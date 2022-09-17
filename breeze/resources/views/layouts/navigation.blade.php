@@ -26,6 +26,11 @@
                         Categorías
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('productos')" :active="request()->routeIs('productos')">
+                        Productos
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
